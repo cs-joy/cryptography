@@ -29,8 +29,24 @@ from hashlib import sha512
 
 hash = int.from_bytes(sha512(msg).digest(), byteorder='big')
 signature = pow(hash, keyPair.d, keyPair.n)
+print('signature: ', signature)
 print('hash: ', hash)
 print('Signature: ', hex(signature))
+
+# the signature is 1024-bit integer (128 bytes, 256 hex digits). 
+# This signature size corresponds to the RSA key size.
+
+# now let's verify the signature, by decrypting the signature using the public key (raise
+# the signature to power e modulo n) and comparing the obtained hash from the signature to the hash of
+# the originally signed message:
+
+# RSA verify signature
+msg = b'A message for signing'
+
+hashFromSignature = pow(signature, keyPair.e, keyPair.e)
+print('hashFromSignature: ', hashFromSignature)
+print('Signature valid: ', hash == hashFromSignature)
+
 
 
 
