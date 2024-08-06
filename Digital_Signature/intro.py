@@ -18,4 +18,19 @@ keyPair = RSA.generate(bits=1024)
 print(f'Public key: (n={hex(keyPair.n)}, e={hex(keyPair.e)})')
 print(f'Private key: (n={hex(keyPair.n)}, d={keyPair.d})')
 
+# let's sign a message, using the RSA private key {n, d}. 
+# calculate it's hash and raise the hash to the power d modulo n (encryt the hash by the private key).
+# we shall use SHA-512 hash.
+
+
+# RSA sign message
+msg = b'A message for signing'
+from hashlib import sha512
+
+hash = int.from_bytes(sha512(msg).digest(), byteorder='big')
+signature = pow(hash, keyPair.d, keyPair.n)
+print('hash: ', hash)
+print('Signature: ', hex(signature))
+
+
 
